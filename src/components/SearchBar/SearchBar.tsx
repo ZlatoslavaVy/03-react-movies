@@ -1,6 +1,10 @@
 import styles from "./SearchBar.module.css";
 
-export default function SearchBar({ onSubmit }) {
+interface SearchBarProps {
+  onSubmit: (topic: string) => void;
+}
+
+export default function SearchBar({ onSubmit }: SearchBarProps) {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
