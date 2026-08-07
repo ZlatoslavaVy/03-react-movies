@@ -1,22 +1,16 @@
 import axios from "axios";
 
-const response = await axios.get(
-  "https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1",
-  {
-    params: { query },
-  },
-);
+const API_KEY = import.meta.env.VITE_TMDB_TOKEN;
 
 async function getMovies(query) {
   const response = await axios.get(
     "https://api.themoviedb.org/3/search/movie",
     {
-      params: {
-        // твої параметри
-      },
+      params: { query },
       headers: {
-        Authorization: `Bearer  ${import.meta.env.VITE_API_KEY}`,
+        Authorization: `Bearer  ${API_KEY}`,
       },
     },
   );
+  console.log(response.data);
 }
