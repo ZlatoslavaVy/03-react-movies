@@ -4,6 +4,7 @@ import css from "./App.module.css";
 import { fetchMovies } from "../../../services/movieService";
 import type { Movie } from "../../../types/movie";
 import toast, { Toaster } from "react-hot-toast";
+import MovieGrid from "../../MovieGrid/MovieGrid";
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -16,10 +17,15 @@ function App() {
     }
     setMovies(results);
   };
+
+  const handleSelect = (movie: Movie) => {
+    console.log("Selected movie:", movie);
+  };
   return (
     <>
       <SearchBar onSubmit={handleSubmit} />
       <Toaster />
+      <MovieGrid movies={movies} onSelect={handleSelect} />
     </>
   );
 }
