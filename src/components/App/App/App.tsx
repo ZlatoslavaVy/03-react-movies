@@ -6,20 +6,28 @@ import type { Movie } from "../../../types/movie";
 import toast, { Toaster } from "react-hot-toast";
 import MovieGrid from "../../MovieGrid/MovieGrid";
 import Loader from "../../Loader/Loader";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isErrorMessage, setIsErrorMessage] = useState<boolean>(false);
 
   const handleSubmit = async (topic: string) => {
     setIsLoading(true);
-    const results = await fetchMovies(topic);
+    setIsErrorMessage(false);
+    try {
+      const results = await fetchMovies(topic);
 
-    if (results.length === 0) {
-      toast("No movies found for your request.");
+      if (results.length === 0) {
+        toast("No movies found for your request.");
+      }
+      setMovies(results);
+    } catch {
+      setIsErrorMessage(true);
+    } finally {
+      setIsLoading(false);
     }
-    setMovies(results);
-    setIsLoading(false);
   };
 
   const handleSelect = (movie: Movie) => {
@@ -32,6 +40,8 @@ function App() {
 
       {isLoading ? (
         <Loader />
+      ) : isErrorMessage ? (
+        <ErrorMessage />
       ) : (
         <MovieGrid movies={movies} onSelect={handleSelect} />
       )}
