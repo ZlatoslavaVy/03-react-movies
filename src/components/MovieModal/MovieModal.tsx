@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { Movie } from "../../types/movie";
 import css from "./MovieModal.module.css";
@@ -14,6 +15,20 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
   return createPortal(
     <>
       <div
@@ -42,7 +57,7 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
               <strong>Release Date:</strong> {movie.release_date}
             </p>
             <p>
-              <strong>Rating:</strong> movie_vote_average/10
+              <strong>Rating:</strong> {movie.vote_average}/10
             </p>
           </div>
         </div>
